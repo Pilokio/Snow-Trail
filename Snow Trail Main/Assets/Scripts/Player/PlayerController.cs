@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     [SerializeField] Transform playerCamera = null;
 
     [SerializeField] float mouseSensitivity = 3.5f;
@@ -17,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     float cameraPitch = 0.0f;
     float velocityY = 0.0f;
+    
     CharacterController playerController = null;
 
     Vector2 currentDirection = Vector2.zero;
@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     {
         playerController = GetComponent<CharacterController>();
 
+        // Lock the cursor in middle of the screen
         if (lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -49,12 +50,13 @@ public class PlayerController : MonoBehaviour
         // Get the mouse input
         Vector2 targetMouseDelta = new Vector2 (Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
+        // Smooth the mouse movement
         currentMouseDelta = Vector2.SmoothDamp (currentMouseDelta, targetMouseDelta, ref currentMouseDeltaVelocity, mouseSmoothTime);
 
-        // invert the y input of the mose for accurate looking up and down
+        // invert the Y input of the mose for accurate looking up and down
         cameraPitch -= currentMouseDelta.y * mouseSensitivity;
 
-        // Lock the camera pitch so it soes not rotate 360 degerees on the Y
+        // Lock the camera pitch so it does not rotate 360 degerees on the Y
         cameraPitch = Mathf.Clamp (cameraPitch, -90.0f, 90.0f);
 
         playerCamera.localEulerAngles = Vector3.right * cameraPitch;
