@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
+using TMPro;
 using UnityEngine;
 
 public class WeaponController : MonoBehaviour
@@ -25,7 +26,10 @@ public class WeaponController : MonoBehaviour
     public LayerMask whatIsEnemy;
 
     // Graphics
-    
+    public GameObject muzzleFlash, bulletImpactGraphic;
+    public CameraShake cameraShake;
+    public float cameraShakeMagnitude, cameraShakeDuration;
+    public TextMeshProUGUI ammunitionInformationText;
 
     private void Awake() 
     {
@@ -35,7 +39,10 @@ public class WeaponController : MonoBehaviour
 
     private void Update() 
     {
-        Weaponinput();   
+        Weaponinput();
+
+        // Set ammo text
+        ammunitionInformationText.SetText(bulletsLeft + " / " + magazineSize);
     }
 
     private void Weaponinput()
@@ -76,8 +83,18 @@ public class WeaponController : MonoBehaviour
             //     raycastHit.collider.GetComponent<Enemy>().TakeDamage(damage);
         }
 
+        // Shake the camera
+        cameraShake.Shake (cameraShakeDuration, cameraShakeMagnitude);
+
+        // Graphics
+        var bulletImpactClone = (GameObject) Instantiate (bulletImpactGraphic, raycastHit.point, Quaternion.Euler(0, 180, 0));
+        var muzzleFlashClone = (GameObject) Instantiate (muzzleFlash, attackPoint.position, Quaternion.identity);
+
         bulletsLeft--;
         bulletsShot--;
+        
+        Destroy (bulletImpactClone, 0.5f);
+        Destroy (muzzleFlashClone, 0.5f);
 
         Invoke ("ResetShoot", timeBetweenShooting);
 
