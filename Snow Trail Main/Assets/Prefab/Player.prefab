@@ -45,7 +45,7 @@ MonoBehaviour:
   damage: 20
   magazineSize: 12
   bulletsPerTap: 1
-  timeBetweenShooting: 0.05
+  timeBetweenShooting: 0.08
   spread: 0.02
   range: 100
   reloadTime: 1
@@ -74,7 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8109996865060943548}
   m_Layer: 0
-  m_Name: Pivot
+  m_Name: Camera Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2722006108825584142}
   - component: {fileID: 8025687066387250997}
-  - component: {fileID: 9201759262533330113}
   m_Layer: 0
   m_Name: Weapon Camera
   m_TagString: Untagged
@@ -201,14 +200,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &9201759262533330113
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4562444507766597893}
-  m_Enabled: 1
 --- !u!1 &9171084358010536900
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,8 +369,8 @@ MonoBehaviour:
   moveSmoothTime: 0.3
   mouseSmoothTime: 0.03
   lockCursor: 1
-  leanSpeed: 100
-  maxLeanAngle: 20
+  leanSpeed: 90
+  maxLeanAngle: 25
 --- !u!1001 &9171084358652444715
 PrefabInstance:
   m_ObjectHideFlags: 0

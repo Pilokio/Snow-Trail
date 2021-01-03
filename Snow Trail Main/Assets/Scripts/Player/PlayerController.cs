@@ -112,8 +112,14 @@ public class PlayerController : MonoBehaviour
         // Smooth the walking
         currentDirection = Vector2.SmoothDamp (currentDirection, targetDirection, ref currentDirectionVelocity, moveSmoothTime);
 
+        // Ground check
         if (playerController.isGrounded)
+        {
             velocityY = 0.0f;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                velocityY = 7.5f;
+        }
 
         velocityY += gravity * Time.deltaTime;
 
