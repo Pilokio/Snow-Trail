@@ -80,23 +80,28 @@ public class WeaponController : MonoBehaviour
         // Raycast
         if (Physics.Raycast (playerCamera.transform.position, shootDirection, out raycastHit, range, whatIsEnemy))
         {
-            Debug.Log (raycastHit.collider.name);
+            //Debug.Log (raycastHit.collider.name);
 
-            //if (raycastHit.collider.CompareTag("Enemy"))
-            //     raycastHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+            if (raycastHit.collider.CompareTag("Enemy"))
+            {
+                Debug.Log("Hit enemy");
+                Destroy(raycastHit.transform.gameObject);
+                //raycastHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+            }
+            
         }
 
         // Shake the camera
         cameraShake.Shake (cameraShakeDuration, cameraShakeMagnitude);
 
         // Graphics
-        var bulletImpactClone = (GameObject) Instantiate (bulletImpactGraphic, raycastHit.point, Quaternion.Euler(0, 180, 0));
+        //var bulletImpactClone = (GameObject) Instantiate (bulletImpactGraphic, raycastHit.point, Quaternion.Euler(0, 180, 0));
         var muzzleFlashClone = (GameObject) Instantiate (muzzleFlash, attackPoint.position, attackPoint.rotation);
 
         bulletsLeft--;
         bulletsShot--;
         
-        Destroy (bulletImpactClone, 0.5f);
+        //Destroy (bulletImpactClone, 0.5f);
         Destroy (muzzleFlashClone, 0.5f);
 
         Invoke ("ResetShoot", timeBetweenShooting);
