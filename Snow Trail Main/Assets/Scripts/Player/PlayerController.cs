@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Transform playerCamera = null;
+    [SerializeField] Transform pivot;
 
     [SerializeField] float mouseSensitivity = 3.5f;
     [SerializeField] float walkSpeed = 6.0f;
@@ -16,6 +18,12 @@ public class PlayerController : MonoBehaviour
 
     float cameraPitch = 0.0f;
     float velocityY = 0.0f;
+
+    // Leaning
+    public float leanSpeed = 100.0f;
+    public float maxLeanAngle = 20.0f;
+
+    float currentLeanAngle = 0.0f;
     
     CharacterController playerController = null;
 
@@ -25,10 +33,16 @@ public class PlayerController : MonoBehaviour
     Vector2 currentMouseDelta = Vector2.zero;
     Vector2 currentMouseDeltaVelocity = Vector2.zero;
 
+    // Leaning left/right
+    private Vector3 originalCameraPosition;
+    private Quaternion initialCameraRotation;
+
     // Start is called before the first frame update
     void Start()
     {
         playerController = GetComponent<CharacterController>();
+
+        if (pivot == null && transform.parent != null) pivot = transform.parent;
 
         // Lock the cursor in middle of the screen
         if (lockCursor)
@@ -43,6 +57,30 @@ public class PlayerController : MonoBehaviour
     {
         UpdateMouseLook();
         UpdateMovement();
+        UpdateLean();
+    }
+
+    private void UpdateLean()
+    {
+        Vector3 direction = Vector3.zero;
+
+        // lean left
+        if (Input.GetKey(KeyCode.Q))
+        {
+            currentLeanAngle = Mathf.MoveTowardsAngle(currentLeanAngle, maxLeanAngle, leanSpeed * Time.deltaTime);
+        }
+        // lean right
+        else if (Input.GetKey(KeyCode.E))
+        {
+            currentLeanAngle = Mathf.MoveTowardsAngle(currentLeanAngle, -maxLeanAngle, leanSpeed * Time.deltaTime);
+        }
+        // reset lean
+        else
+        {
+            currentLeanAngle = Mathf.MoveTowardsAngle(currentLeanAngle, 0f, leanSpeed * Time.deltaTime);
+        }
+ 
+        pivot.transform.localRotation = Quaternion.AngleAxis(currentLeanAngle, Vector3.forward);
     }
 
     void UpdateMouseLook()

@@ -47,14 +47,17 @@ public class WeaponController : MonoBehaviour
 
     private void Weaponinput()
     {
+        // Determine if the weapon is fully automatic or not
         if (allowButtonHold)
             shooting = Input.GetKey (KeyCode.Mouse0);
         else
             shooting = Input.GetKeyDown (KeyCode.Mouse0);
 
+        // Allow reload if player is using less than the mag size and not already reloading
         if (Input.GetKeyDown (KeyCode.R) && bulletsLeft < magazineSize && !reloading)
             Reload();
 
+        // Fire if ready to shoot is true
         if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
         {
             bulletsShot = bulletsPerTap;
@@ -88,7 +91,7 @@ public class WeaponController : MonoBehaviour
 
         // Graphics
         var bulletImpactClone = (GameObject) Instantiate (bulletImpactGraphic, raycastHit.point, Quaternion.Euler(0, 180, 0));
-        var muzzleFlashClone = (GameObject) Instantiate (muzzleFlash, attackPoint.position, Quaternion.identity);
+        var muzzleFlashClone = (GameObject) Instantiate (muzzleFlash, attackPoint.position, attackPoint.rotation);
 
         bulletsLeft--;
         bulletsShot--;
